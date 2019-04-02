@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 def get_version():
-    return "v0.1"
+    return "0.1"
 
 
 setup(
@@ -10,7 +10,7 @@ setup(
     version=get_version(),
     packages=find_packages(),
     entry_points={
-        "console_scripts": ["jeecf = jeecf-cli.jeecf:main"]
+        "console_scripts": ["jeecf=jeecf.command:main"]
     },
     install_requires=[
         'requests',
