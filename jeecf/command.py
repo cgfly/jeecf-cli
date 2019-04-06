@@ -8,20 +8,23 @@ from .config import set_config, get_config
 
 @click.group()
 def main():
-    pass
+    """
+    jeecf help content
+    """
 
 
-@main.command()
-@click.argument("path", required=True)
+@main.command(help="")
+@click.argument("path", required=False)
 @click.option("--username")
 @click.option("--password")
 def login(path, username, password):
-    if not path:
-        path = "http://127.0.0.1:8801"
-    else:
+    if path:
         if not path.startswith("http"):
-            click.echo("Error:", color="Red")
+            click.echo("Error:")
             sys.exit("The url should starts with http or https...")
+    else:
+        path = "http://127.0.0.1:8801"
+
     if not username:
         username = input("username:")
     if not password:
@@ -38,6 +41,7 @@ def login(path, username, password):
         if resp['success']:
             set_config("login", "username", username)
             set_config("login", "password", password)
+            set_config("login", "path", path)
             click.echo("Login Success!")
         else:
             click.echo(f"Login Failed: {resp['errorMessage']}")
@@ -47,4 +51,11 @@ def login(path, username, password):
         click.echo(f"jeecf error: {e}")
 
 
-
+@main.command(help='show command help content')
+@click.argument("objects", required=True, type=click.Choice(['namespace', 'api']))
+@click.option("-n", "--namespace", type=click.STRING, help="use namespace")
+def show(objects):
+    if objects == 'namespace':
+        click.echo(objects)
+    elif objects == 'api':
+        click.echo("api")
