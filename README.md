@@ -12,7 +12,7 @@
 jeecf login <url>
 ```
 
-2. 获取命名空间列表和当前命名空间
+2. 获取命名空间列表并标出当前命名空间
 
 ```bash
 jeecf namespace
@@ -25,7 +25,7 @@ jeecf namespace
 jeecf namespace use <name>
 ```
 
-4. 获取数据源列表和当前数据源
+4. 获取数据源列表并标出当前数据源
 
 ```bash
 jeecf dbsource
@@ -43,7 +43,7 @@ jeecf dbsource use <name>
 jeecf plugin
 ```
 
-7. 插件支持语言列表
+7. 插件支持的语言列表
 ```bash
 jeecf plugin --language
 ```
