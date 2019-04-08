@@ -69,9 +69,7 @@ class Jeecf:
 
     def get_current_namespace(self):
         path = urljoin(self.base_url, "/cli/namespace")
-        req = requests.post(url=path, json=self.base_data)
-        assert req.status_code == 200, self.SERVER_ERROR_INFO
-        resp = req.json()
+        resp = self._post_data(path, self.base_data)
         if resp['success']:
             return resp['data']
         else:
@@ -79,9 +77,7 @@ class Jeecf:
 
     def set_current_namespace(self, namespace):
         path = urljoin(self.base_url, f"/cli/namespace/effect/{namespace}")
-        req = requests.post(url=path, json=self.base_data)
-        assert req.status_code == 200, self.SERVER_ERROR_INFO
-        resp = req.json()
+        resp = self._post_data(path, self.base_data)
         if resp['success']:
             return resp['data']
         else:
@@ -89,24 +85,19 @@ class Jeecf:
 
     def get_namespace_list(self):
         path = urljoin(self.base_url, "/cli/namespace/list")
-        req = requests.post(url=path, json=self.base_data)
-        assert req.status_code == 200, self.SERVER_ERROR_INFO
-        resp = req.json()
+        resp = self._post_data(path, self.base_data)
         if resp['success']:
             current = self.get_current_namespace()
             for namespace in resp['data']:
                 if namespace == current:
                     namespace += " √"
                 click.echo(namespace)
-            return resp['data']
         else:
             return self.get_error_message(resp)
 
     def get_dbsource_list(self):
         path = urljoin(self.base_url, "/cli/sysDbsource/list")
-        req = requests.post(url=path, json=self.base_data)
-        assert req.status_code == 200, self.SERVER_ERROR_INFO
-        resp = req.json()
+        resp = self._post_data(path, self.base_data)
         if resp['success']:
             current = self.get_current_dbsource()
             for dbsource in resp['data']:
@@ -119,9 +110,7 @@ class Jeecf:
 
     def get_current_dbsource(self):
         path = urljoin(self.base_url, "/cli/sysDbsource")
-        req = requests.post(url=path, json=self.base_data)
-        assert req.status_code == 200, self.SERVER_ERROR_INFO
-        resp = req.json()
+        resp = self._post_data(path, self.base_data)
         if resp['success']:
             return resp['data']
         else:
@@ -129,14 +118,47 @@ class Jeecf:
 
     def set_current_dbsource(self, dbsource):
         path = urljoin(self.base_url, f"/cli/sysDbsource/effect/{dbsource}")
-        req = requests.post(url=path, json=self.base_data)
-        assert req.status_code == 200, self.SERVER_ERROR_INFO
-        resp = req.json()
+        resp = self._post_data(path, self.base_data)
         if resp['success']:
             return resp['data']
         else:
             return self.get_error_message(resp)
 
+    def get_plugin_language(self):
+        path = urljoin(self.base_url, "/cli/plugin/languages")
+        resp = self._post_data(path, self.base_data)
+        if resp['success']:
+            for lang in resp['data']:
+                click.echo(lang)
+            return resp['data']
+        else:
+            return self.get_error_message(resp)
+
+    def get_plugin_list(self):
+        namespace = self.get_current_namespace()
+        path = urljoin(self.base_url, f"/cli/plugin/{namespace}")
+        resp = self._post_data(path, self.base_data)
+        if resp['success']:
+            click.echo(f"data is {resp}")
+            return resp['data']
+        else:
+            return self.get_error_message()
+
+    def get_plugin_detail(self, plugin):
+        namespace = self.get_current_namespace()
+        path = urljoin(self.base_url, f"/cli/plugin/detail/{namespace}/{plugin}")
+        resp = self._post_data(path, self.base_data)
+        if resp['success']:
+            click.echo(f"data is {resp}")
+            return resp['data']
+        else:
+            return self.get_error_message(resp)
+
+    def _post_data(self, path, data):
+        req = requests.post(url=path, json=data)
+        assert req.status_code == 200, self.SERVER_ERROR_INFO
+        return req.json()
+
     def get_error_message(self, resp):
-        return click.echo(f'Error: {resp}')
+        return click.echo(f"Error: {resp['errorMessage']}")
 

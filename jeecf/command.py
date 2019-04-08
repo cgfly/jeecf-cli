@@ -49,11 +49,12 @@ def dbsource(command, name):
 
 
 @main.command()
-@click.argument("command", required=False, type=click.Choice(['detail', 'language']))
-def plugin(command):
-    if command == 'language':
-        pass
-    elif command == 'detail':
-        pass
+@click.option("--language", required=False, is_flag=True)
+@click.argument("name", required=False, type=click.STRING)
+def plugin(language, name):
+    if language:
+        Jeecf().get_plugin_language()
+    elif plugin:
+        Jeecf().get_plugin_detail(name)
     else:
-        pass
+        Jeecf().get_plugin_list()
