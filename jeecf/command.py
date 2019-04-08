@@ -12,6 +12,11 @@ def main():
 
 
 @main.command()
+def version():
+    click.echo("0.0.1")
+
+
+@main.command()
 @click.argument("path", required=True)
 @click.option("--username", type=click.STRING)
 @click.option("--password", type=click.STRING)

@@ -2,7 +2,18 @@
 
 ## Install
 
+### from PYPI
+
 > pip install jeecf
+
+### from source
+
+```
+python -m venv venv
+pip install -r requirements.txt
+python setup.py install
+jeecf version
+```
 
 ## Commands
 
