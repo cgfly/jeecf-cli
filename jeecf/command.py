@@ -1,61 +1,38 @@
 import click
 import getpass
-import requests
 import sys
-from urllib.parse import urljoin
-from .config import set_config, get_config
+from .jeecf import Jeecf
 
 
 @click.group()
 def main():
     """
-    jeecf help content
+    jeecf client command toooool
     """
 
 
-@main.command(help="")
-@click.argument("path", required=False)
-@click.option("--username")
-@click.option("--password")
+@main.command()
+@click.argument("path", required=True)
+@click.option("--username", type=click.STRING)
+@click.option("--password", type=click.STRING)
 def login(path, username, password):
     if path:
         if not path.startswith("http"):
             click.echo("Error:")
             sys.exit("The url should starts with http or https...")
-    else:
-        path = "http://127.0.0.1:8801"
 
     if not username:
         username = input("username:")
     if not password:
         password = getpass.getpass("password:")
-    path = urljoin(path, "/cli/user/login")
-    data = {
-        "username": username,
-        "password": password
-    }
-    req = requests.post(url=path, json=data)
-    assert req.status_code == 200, "Server Error"
-    try:
-        resp = req.json()
-        if resp['success']:
-            set_config("login", "username", username)
-            set_config("login", "password", password)
-            set_config("login", "path", path)
-            click.echo("Login Success!")
-        else:
-            click.echo(f"Login Failed: {resp['errorMessage']}")
-    except ValueError as e:
-        click.echo(f"json value error: {e}")
-    except Exception as e:
-        click.echo(f"jeecf error: {e}")
+    Jeecf.login(path, username, password)
 
 
-@main.command(help='show command help content')
-@click.argument("objects", required=True, type=click.Choice(['namespace', 'api']))
-@click.option("-n", "--namespace", type=click.STRING, help="use namespace")
-def show(objects):
-    if objects == 'namespace':
-        click.echo(objects)
-    elif objects == 'api':
-        click.echo("api")
+@main.command()
+@click.argument("command", required=False, type=click.Choice(['use']))
+@click.argument("name", required=False)
+def namespace(command, name):
+    if command == 'use':
+        Jeecf().set_current_namespace(name)
+    else:
+        Jeecf().get_namespace_list()
