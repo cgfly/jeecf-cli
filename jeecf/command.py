@@ -33,6 +33,27 @@ def login(path, username, password):
 @click.argument("name", required=False)
 def namespace(command, name):
     if command == 'use':
-        Jeecf().set_current_namespace(name)
+        click.echo(Jeecf().set_current_namespace(name))
     else:
         Jeecf().get_namespace_list()
+
+
+@main.command()
+@click.argument("command", required=False, type=click.Choice(['use']))
+@click.argument("name", required=False)
+def dbsource(command, name):
+    if command == 'use':
+        click.echo(Jeecf().set_current_dbsource(name))
+    else:
+        Jeecf().get_dbsource_list()
+
+
+@main.command()
+@click.argument("command", required=False, type=click.Choice(['detail', 'language']))
+def plugin(command):
+    if command == 'language':
+        pass
+    elif command == 'detail':
+        pass
+    else:
+        pass

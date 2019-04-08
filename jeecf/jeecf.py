@@ -93,13 +93,47 @@ class Jeecf:
         assert req.status_code == 200, self.SERVER_ERROR_INFO
         resp = req.json()
         if resp['success']:
-            namespace_list = resp['data']
             current = self.get_current_namespace()
-            for namespace in namespace_list:
+            for namespace in resp['data']:
                 if namespace == current:
                     namespace += " √"
                 click.echo(namespace)
-            return namespace_list
+            return resp['data']
+        else:
+            return self.get_error_message(resp)
+
+    def get_dbsource_list(self):
+        path = urljoin(self.base_url, "/cli/sysDbsource/list")
+        req = requests.post(url=path, json=self.base_data)
+        assert req.status_code == 200, self.SERVER_ERROR_INFO
+        resp = req.json()
+        if resp['success']:
+            current = self.get_current_dbsource()
+            for dbsource in resp['data']:
+                if dbsource == current:
+                    dbsource += " √"
+                click.echo(dbsource)
+            return resp['data']
+        else:
+            return self.get_error_message(resp)
+
+    def get_current_dbsource(self):
+        path = urljoin(self.base_url, "/cli/sysDbsource")
+        req = requests.post(url=path, json=self.base_data)
+        assert req.status_code == 200, self.SERVER_ERROR_INFO
+        resp = req.json()
+        if resp['success']:
+            return resp['data']
+        else:
+            return self.get_error_message(resp)
+
+    def set_current_dbsource(self, dbsource):
+        path = urljoin(self.base_url, f"/cli/sysDbsource/effect/{dbsource}")
+        req = requests.post(url=path, json=self.base_data)
+        assert req.status_code == 200, self.SERVER_ERROR_INFO
+        resp = req.json()
+        if resp['success']:
+            return resp['data']
         else:
             return self.get_error_message(resp)
 
