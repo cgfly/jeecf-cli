@@ -9,7 +9,7 @@
 1. 登陆
 
 ```bash
-jeecf login <base_url>
+jeecf login <url>
 ```
 
 2. 获取命名空间列表和当前命名空间
