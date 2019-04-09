@@ -30,8 +30,7 @@ def get_config(section, option):
     if config.has_section(section):
         if config.has_option(section, option):
             return config.get(section, option)
-    else:
-        raise JeecfNotLoginException()
+    raise JeecfNotLoginException()
 
 
 class Jeecf:
