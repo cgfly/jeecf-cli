@@ -181,6 +181,26 @@ class Jeecf:
         else:
             return self.get_error_message(resp)
 
+    def get_template_list(self):
+        namespace = self.get_current_namespace()
+        path = urljoin(self.base_url, f"/cli/tmpl/list/{namespace}")
+        resp = self._post_data(path, self.base_data)
+        if resp['success']:
+            template_list = resp.get('data')
+            for template in template_list:
+                click.echo(template)
+        else:
+            return self.get_error_message(resp)
+
+    def pull_template(self, name):
+        namespace = self.get_current_namespace()
+        path = urljoin(self.base_url, f"/cli/tmpl/pull/{namespace}/{name}")
+        resp = self._post_data(path, self.base_data)
+        if resp['success']:
+            click.echo(resp.get('data'))
+        else:
+            return self.get_error_message(resp)
+
     def _post_data(self, path, data):
         req = requests.post(url=path, json=data)
         assert req.status_code == 200, self.SERVER_ERROR_INFO
@@ -188,4 +208,3 @@ class Jeecf:
 
     def get_error_message(self, resp):
         click.echo(f"Error: {resp['errorMessage']}")
-

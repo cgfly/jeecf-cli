@@ -72,3 +72,13 @@ def field(name):
         Jeecf().get_field_detail(name)
     else:
         Jeecf().get_field_list()
+
+
+@main.command()
+@click.argument("pull", required=False, nargs=2)
+def template(pull):
+    if pull:
+        click.echo(pull)
+    else:
+        Jeecf().get_template_list()
+
