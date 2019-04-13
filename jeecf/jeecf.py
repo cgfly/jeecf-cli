@@ -1,5 +1,6 @@
 import click
 import configparser
+import json
 import os
 import requests
 from urllib.parse import urljoin
@@ -103,7 +104,6 @@ class Jeecf:
                 if dbsource == current:
                     dbsource += " √"
                 click.echo(dbsource)
-            return resp['data']
         else:
             return self.get_error_message(resp)
 
@@ -135,11 +135,12 @@ class Jeecf:
 
     def get_plugin_list(self):
         namespace = self.get_current_namespace()
-        path = urljoin(self.base_url, f"/cli/plugin/{namespace}")
+        path = urljoin(self.base_url, f"/cli/plugin/plugins/{namespace}")
         resp = self._post_data(path, self.base_data)
         if resp['success']:
-            click.echo(f"data is {resp}")
-            return resp['data']
+            plugin_list = resp.get('data', [])
+            for plugin in plugin_list:
+                click.echo(plugin)
         else:
             return self.get_error_message()
 
@@ -148,8 +149,35 @@ class Jeecf:
         path = urljoin(self.base_url, f"/cli/plugin/detail/{namespace}/{plugin}")
         resp = self._post_data(path, self.base_data)
         if resp['success']:
-            click.echo(f"data is {resp}")
-            return resp['data']
+            click.echo(json.dumps(resp.get('data', {}),
+                                  sort_keys=True,
+                                  indent=4,
+                                  separators=(',', ':'),
+                                  ensure_ascii=False))
+        else:
+            return self.get_error_message(resp)
+
+    def get_field_list(self):
+        namespace = self.get_current_namespace()
+        path = urljoin(self.base_url, f"/cli/field/list/{namespace}")
+        resp = self._post_data(path, self.base_data)
+        if resp['success']:
+            fields = resp.get('data')
+            for field in fields:
+                click.echo(field)
+        else:
+            return self.get_error_message(resp)
+
+    def get_field_detail(self, name):
+        namespace = self.get_current_namespace()
+        path = urljoin(self.base_url, f"/cli/field/detail/{namespace}/{name}")
+        resp = self._post_data(path, self.base_data)
+        if resp['success']:
+            click.echo(json.dumps(resp.get('data', {}),
+                                  sort_keys=True,
+                                  indent=4,
+                                  separators=(',', ":"),
+                                  ensure_ascii=False))
         else:
             return self.get_error_message(resp)
 
@@ -159,5 +187,5 @@ class Jeecf:
         return req.json()
 
     def get_error_message(self, resp):
-        return click.echo(f"Error: {resp['errorMessage']}")
+        click.echo(f"Error: {resp['errorMessage']}")
 

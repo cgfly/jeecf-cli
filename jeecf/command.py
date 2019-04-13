@@ -59,7 +59,16 @@ def dbsource(command, name):
 def plugin(language, name):
     if language:
         Jeecf().get_plugin_language()
-    elif plugin:
+    elif name:
         Jeecf().get_plugin_detail(name)
     else:
         Jeecf().get_plugin_list()
+
+
+@main.command()
+@click.argument("name", required=False, type=click.STRING)
+def field(name):
+    if name:
+        Jeecf().get_field_detail(name)
+    else:
+        Jeecf().get_field_list()
