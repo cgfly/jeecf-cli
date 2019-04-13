@@ -17,51 +17,79 @@ jeecf version
 
 ## Commands
 
-1. 登陆
+### login
 
 ```bash
 jeecf login <url>
 ```
 
-2. 获取命名空间列表并标出当前命名空间
+### namespace
+
+1. 获取命名空间列表并标出当前命名空间
 
 ```bash
 jeecf namespace
 ```
 
-
-3. 切换命名空间
+2. 切换命名空间
 
 ```bash
 jeecf namespace use <name>
 ```
 
-4. 获取数据源列表并标出当前数据源
+### dbsource
+
+1. 获取数据源列表并标出当前数据源
 
 ```bash
 jeecf dbsource
 ```
 
-5. 切换数据源
+2. 切换数据源
 
 ```bash
 jeecf dbsource use <name>
 ```
 
-6. 插件列表
+### plugin
+
+1. 插件列表
 
 ```bash
 jeecf plugin
 ```
 
-7. 插件支持的语言列表
+2. 插件支持的语言列表
+
 ```bash
 jeecf plugin --language
 ```
 
-8. 插件详情
+3. 插件详情
 ```bash
 jeecf plugin <name>
 ```
 
+### field
 
+1. 属性列表
+```bash
+jeecf field
+```
+
+2. 属性详情
+```bash
+jeecf field <name>
+```
+
+### template
+
+1. 模板列表
+```bash
+jeecf template
+```
+
+2. 拉取模板
+```bash
+jeecf template pull <name>
+```
