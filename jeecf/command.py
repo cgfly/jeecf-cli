@@ -75,12 +75,12 @@ def field(name):
 
 
 @main.command()
-@click.argument("subcommand", required=False, type=click.Choice(['pull', 'download']))
+@click.argument("subcommand", required=False, type=click.Choice(['pull', 'code']))
 @click.argument("name", required=False)
 def template(subcommand, name):
     if subcommand == 'pull':
         Jeecf().pull_template(name)
-    elif subcommand == 'download':
+    elif subcommand == 'code':
         click.echo(f"{subcommand}")
     else:
         Jeecf().get_template_list()

@@ -197,9 +197,33 @@ class Jeecf:
         path = urljoin(self.base_url, f"/cli/tmpl/pull/{namespace}/{name}")
         resp = self._post_data(path, self.base_data)
         if resp['success']:
-            click.echo(resp.get('data'))
+            uuid = resp.get('data')
+            if uuid:
+                click.echo(uuid)
+                self.download_template(name, uuid)
         else:
             return self._get_error_message(resp)
+
+    def download_template(self, name, uuid):
+        path = urljoin(self.base_url, f"/cli/tmpl/download/{uuid}")
+        resp = requests.get(url=path)
+        file_name = f"{name}.zip"
+        with open(file_name, 'wb') as f:
+            f.write(resp.content)
+        click.echo(f"File downloaded: {file_name}")
+
+    def gen_code(self, uuid):
+        pass
+
+    def download_code(self, uuid):
+        path = urljoin(self.base_url, f"/cli/tmpl/download/code/{uuid}")
+        resp = requests.get(url=path)
+        with open(f"hello.zip", 'wb') as f:
+            f.write(resp.content)
+        click.echo(resp.status_code)
+
+    def upload_template(self):
+        pass
 
     def _post_data(self, path, data):
         req = requests.post(url=path, json=data)
