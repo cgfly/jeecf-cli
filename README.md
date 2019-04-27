@@ -1,6 +1,6 @@
 # jeecf-cli
 
-![](https://img.shields.io/pypi/v/jeecf.svg)
+![](https://img.shields.io/pypi/v/jeecf-cli.svg)
 
 ## Introduce
 
