@@ -1,5 +1,10 @@
 import click
 import configparser
+import yaml
+try:
+    from yaml import CLoader as Loader, CDumper as Dumper
+except ImportError:
+    from yaml import Loader, Dumper
 import json
 import os
 import requests
@@ -212,18 +217,61 @@ class Jeecf:
             f.write(resp.content)
         click.echo(f"File downloaded: {file_name}")
 
-    def gen_code(self, uuid):
-        pass
+    def gen_code(self, file_path):
+        with open(file_path, 'r') as file:
+            try:
+                genSingleModel = yaml.load(file, Loader=Loader)
+                dbsource = genSingleModel.pop('dbsource')
+                namespace = genSingleModel.pop('namespace')
+                params = {}
+                params.update(
+                    genSingleModel=genSingleModel,
+                    dbsource=dbsource,
+                    namespace=namespace,
+                    **self.base_data
+                )
+                path = urljoin(self.base_url, f"/cli/tmpl/gen")
+                resp = self._post_data(path, data=params)
+                if resp['success']:
+                    uuid = resp.get('data')
+                    click.echo(uuid)
+                    self.download_code(uuid, file_path)
+                else:
+                    click.echo(resp['errorMessage'])
+            except yaml.YAMLError as e:
+                click.echo(f'Error when parse {file_path} \n{e}')
 
-    def download_code(self, uuid):
+    def download_code(self, uuid, file_path):
+        file = file_path.split('.')[0]
         path = urljoin(self.base_url, f"/cli/tmpl/download/code/{uuid}")
+        file_name = f"{file}.zip"
         resp = requests.get(url=path)
-        with open(f"hello.zip", 'wb') as f:
+        with open(file_name, 'wb') as f:
             f.write(resp.content)
-        click.echo(resp.status_code)
+        click.echo(f"Code downloaded: {file_name}")
 
-    def upload_template(self):
-        pass
+    def push_template(self, file_path, **kwargs):
+        path = urljoin(self.base_url, f"/cli/tmpl/push")
+        kwargs.update(self.base_data)
+        with open(file_path, 'rb') as file:
+            resp = requests.post(url=path, params=kwargs, files={'file': file},
+                headers={
+                    # "Content-Type": "multipart/form-data;",
+                    "Accept-Encoding": "gzip, deflate, br",
+                    "Accept": "*/*",
+                    "X-Requested-With": "XMLHttpRequest",
+                }, auth=('admin', '123456')
+            )
+            resp = resp.json()
+            if resp['success']:
+                click.echo(json.dumps(resp.get('data', {}),
+                                      sort_keys=True,
+                                      indent=4,
+                                      separators=(',', ':'),
+                                      ensure_ascii=False))
+            else:
+                click.echo(resp['errorMessage'])
+
 
     def _post_data(self, path, data):
         req = requests.post(url=path, json=data)

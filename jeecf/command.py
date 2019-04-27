@@ -75,12 +75,23 @@ def field(name):
 
 
 @main.command()
-@click.argument("subcommand", required=False, type=click.Choice(['pull', 'code']))
+@click.argument("subcommand", required=False, type=click.Choice(['pull', 'gen', 'push']))
 @click.argument("name", required=False)
 def template(subcommand, name):
     if subcommand == 'pull':
         Jeecf().pull_template(name)
-    elif subcommand == 'code':
-        click.echo(f"{subcommand}")
+    elif subcommand == 'gen':
+        Jeecf().gen_code(name)
+    elif subcommand == 'push':
+        Jeecf().push_template(
+            name,
+            name=click.prompt('name'),
+            field=click.prompt('field', default=''),
+            language=click.prompt('language', default=''),
+            version=click.prompt('version', default=''),
+            namespace=click.prompt('namespace', default=''),
+            description=click.prompt('description', default=''),
+            wiki_uri=click.prompt('wiki_uri', default=''),
+        )
     else:
         Jeecf().get_template_list()

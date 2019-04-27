@@ -1,3 +1,5 @@
 requests
 retrying
 click
+pyyaml
+twine

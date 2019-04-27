@@ -8,13 +8,13 @@ def get_version():
 setup(
     name='jeecf',
     version=get_version(),
-    packages=find_packages(),
+    packages=find_packages(exclude=["tests*"]),
     entry_points={
         "console_scripts": ["jeecf=jeecf.command:main"]
     },
     install_requires=[
         'requests',
-        'retrying'
+        'click'
     ],
     include_package_data=True,
     author="tcitry",
@@ -23,9 +23,4 @@ setup(
     license="Apache License 2.0",
     keywords="cloud factory client commandline",
     url="https://github.com/cgfly/jeecf-cli",
-    project_urls={
-        "Jeecf page": "https://github.com/cgfly/jeecf",
-        "Documentation": "https://github.com/cgfly/jeecf-cli/wiki",
-        "Source Code": "https://github.com/cgfly/jeecf-cli",
-    },
 )
