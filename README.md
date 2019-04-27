@@ -8,7 +8,9 @@ Command line toolbox of [Jeecf](https://github.com/cgfly/jeecf)
 
 ## Install
 
-> pip install jeecf-cli
+```bash
+pip install jeecf-cli
+```
 
 ## Commands
 
