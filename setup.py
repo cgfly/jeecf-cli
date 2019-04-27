@@ -6,7 +6,7 @@ def get_version():
 
 
 setup(
-    name='jeecf',
+    name='jeecf-cli',
     version=get_version(),
     packages=find_packages(exclude=["tests*"]),
     entry_points={
