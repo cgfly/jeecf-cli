@@ -1,29 +1,24 @@
 # jeecf-cli
 
-## Install
+![](https://img.shields.io/pypi/v/jeecf.svg)
 
-### from PYPI
+## Introduce
+
+Command toolbox of [Jeecf](https://github.com/cgfly/jeecf)
+
+## Install
 
 > pip install jeecf
 
-### from source
-
-```
-python -m venv venv
-pip install -r requirements.txt
-python setup.py install
-jeecf version
-```
-
 ## Commands
 
-### login
+### 1. login
 
 ```bash
 jeecf login <url>
 ```
 
-### namespace
+### 2. namespace
 
 1. 获取命名空间列表并标出当前命名空间
 
@@ -37,7 +32,7 @@ jeecf namespace
 jeecf namespace use <name>
 ```
 
-### dbsource
+### 3. dbsource
 
 1. 获取数据源列表并标出当前数据源
 
@@ -51,7 +46,7 @@ jeecf dbsource
 jeecf dbsource use <name>
 ```
 
-### plugin
+### 4. plugin
 
 1. 插件列表
 
@@ -70,7 +65,7 @@ jeecf plugin --language
 jeecf plugin <name>
 ```
 
-### field
+### 5. field
 
 1. 属性列表
 ```bash
@@ -82,7 +77,7 @@ jeecf field
 jeecf field <name>
 ```
 
-### template
+### 6. template
 
 1. 模板列表
 ```bash
