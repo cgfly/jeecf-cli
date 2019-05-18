@@ -101,3 +101,11 @@ jeecf template push xxx.zip
 ```bash
 jeecf template gen xxx.yml
 ```
+
+### 8. logout
+
+logout命令会删除本地的配置文件，包含登录信息
+
+```bash
+jeecf logout
+```

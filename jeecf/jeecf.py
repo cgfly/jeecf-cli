@@ -284,3 +284,4 @@ class Jeecf:
         config_path = os.environ['HOME'] + "/.jeecf"
         if os.path.exists(config_path):
             os.remove(config_path)
+        click.echo(f"Logout Success!")
