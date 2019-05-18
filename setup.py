@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 def get_version():
-    return "0.0.1"
+    return "0.0.2"
 
 
 setup(
