@@ -117,7 +117,9 @@ name: dict
 namespace: work
 #数据源 默认当前数据源 非必填
 dbsource: defaultDataSourceKey
+#表信息
 table:
+  #名称
   name: sys_dict
 #模版参数 非必填 如果模版依赖属性 如果不填则使用默认值，如填写则使用填写值 
 fields:
