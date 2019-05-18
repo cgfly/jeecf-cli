@@ -117,7 +117,7 @@ name: dict
 namespace: work
 #数据源 默认当前数据源 非必填
 dbsource: defaultDataSourceKey
-#表信息
+#表信息 非必填
 table:
   #名称
   name: sys_dict
