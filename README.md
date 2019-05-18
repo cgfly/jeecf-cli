@@ -108,8 +108,8 @@ logout命令会删除本地的配置文件，包含登录信息
 ```bash
 jeecf logout
 ```
-
-### 代码生成 yml文件参数声明：
+## Reference   
+### 代码生成 yml文件参数声明
 ```bash
 #模版名称 必填
 name: dict 
