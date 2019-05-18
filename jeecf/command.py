@@ -7,13 +7,15 @@ from .jeecf import Jeecf
 @click.group()
 def main():
     """
-    jeecf client command toooool
+    Jeecf client commandline toooool.
+
+    Documents: https://github.com/cgfly/jeecf-cli
     """
 
 
 @main.command()
 def version():
-    click.echo("0.0.1")
+    click.echo("0.0.2")
 
 
 @main.command()
@@ -75,13 +77,11 @@ def field(name):
 
 
 @main.command()
-@click.argument("subcommand", required=False, type=click.Choice(['pull', 'gen', 'push']))
+@click.argument("subcommand", required=False, type=click.Choice(['pull', 'push']))
 @click.argument("name", required=False)
 def template(subcommand, name):
     if subcommand == 'pull':
         Jeecf().pull_template(name)
-    elif subcommand == 'gen':
-        Jeecf().gen_code(name)
     elif subcommand == 'push':
         Jeecf().push_template(
             name,
@@ -95,3 +95,14 @@ def template(subcommand, name):
         )
     else:
         Jeecf().get_template_list()
+
+
+@main.command()
+@click.argument("name", required=True)
+def gen(name):
+    Jeecf().gen_code(name)
+
+
+@main.command()
+def logout():
+    Jeecf().logout()
