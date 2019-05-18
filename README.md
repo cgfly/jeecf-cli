@@ -91,12 +91,13 @@ jeecf template
 jeecf template pull <name>
 ```
 
-3. 根据模板生成代码
-```bash
-jeecf template gen xxx.yml
-```
-
-4. 上传模板
+3. 上传模板
 ```bash
 jeecf template push xxx.zip
+```
+
+### 7. gen
+1. 根据模板生成代码
+```bash
+jeecf template gen xxx.yml
 ```

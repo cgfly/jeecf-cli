@@ -239,7 +239,7 @@ class Jeecf:
                 else:
                     click.echo(resp['errorMessage'])
             except yaml.YAMLError as e:
-                click.echo(f'Error when parse {file_path} \n{e}')
+                click.echo(f'Yaml syntax error when parse {file_path} \n{e}')
 
     def download_code(self, uuid, file_path):
         file = file_path.split('.')[0]
@@ -272,7 +272,6 @@ class Jeecf:
             else:
                 click.echo(resp['errorMessage'])
 
-
     def _post_data(self, path, data):
         req = requests.post(url=path, json=data)
         assert req.status_code == 200, self.SERVER_ERROR_INFO
@@ -280,3 +279,8 @@ class Jeecf:
 
     def _get_error_message(self, resp):
         click.echo(f"Error: {resp['errorMessage']}")
+
+    def logout(self):
+        config_path = os.environ['HOME'] + "/.jeecf"
+        if os.path.exists(config_path):
+            os.remove(config_path)
