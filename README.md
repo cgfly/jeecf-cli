@@ -99,13 +99,30 @@ jeecf template push xxx.zip
 ### 7. gen
 1. 根据模板生成代码
 ```bash
-jeecf template gen xxx.yml
+jeecf gen xxx.yml
 ```
-
 ### 8. logout
 
 logout命令会删除本地的配置文件，包含登录信息
 
 ```bash
 jeecf logout
+```
+
+### 代码生成 yml文件参数声明：
+```bash
+#模版名称 必填
+name: dict 
+#命名空间 默认当前命名空间 非必填
+namespace: work
+#数据源 默认当前数据源 非必填
+dbsource: defaultDataSourceKey
+table:
+  name: sys_dict
+#模版参数 非必填 如果模版依赖属性 如果不填则使用默认值，如填写则使用填写值 
+fields:
+    #属性名称 如果模版属性中包含此名称，则覆盖其默认值，否则当新名称使用
+  - name: packageName
+    #属性值
+    value: test
 ```
