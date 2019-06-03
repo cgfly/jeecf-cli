@@ -127,4 +127,11 @@ fields:
   - name: packageName
     #属性值
     value: test
+dir:
+  #文件生成目录 默认当前文件夹，支持相对路径
+  out: "."
+  #命令执行目录 默认当前文件夹，支持相对路径
+  command: "." 
+commands:
+  - "git init"
 ```
