@@ -15,7 +15,7 @@ def main():
 
 @main.command()
 def version():
-    click.echo("0.0.2")
+    click.echo("0.0.3")
 
 
 @main.command()

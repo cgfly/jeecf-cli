@@ -1,6 +1,10 @@
 import click
 import configparser
 import yaml
+import time
+import zipfile
+
+
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
 except ImportError:
@@ -223,6 +227,10 @@ class Jeecf:
                 genSingleModel = yaml.load(file, Loader=Loader)
                 dbsource = genSingleModel.pop('dbsource')
                 namespace = genSingleModel.pop('namespace')
+                commands = genSingleModel.pop("commands")
+                dir = genSingleModel.pop("dir")
+                if dir is None:
+                    dir = {}
                 params = {}
                 params.update(
                     genSingleModel=genSingleModel,
@@ -235,7 +243,9 @@ class Jeecf:
                 if resp['success']:
                     uuid = resp.get('data')
                     click.echo(uuid)
-                    self.download_code(uuid, file_path)
+                    downPath = self.download_code(uuid, file_path)
+                    self.unzip_download_code(downPath,dir["out"])
+                    self.exec_commands(dir["command"],commands)
                 else:
                     click.echo(resp['errorMessage'])
             except yaml.YAMLError as e:
@@ -244,11 +254,38 @@ class Jeecf:
     def download_code(self, uuid, file_path):
         file = file_path.split('.')[0]
         path = urljoin(self.base_url, f"/cli/tmpl/download/code/{uuid}")
-        file_name = f"{file}.zip"
+        file_name = f"{file}_"+str(int(time.time()))+".zip"
         resp = requests.get(url=path)
-        with open(file_name, 'wb') as f:
+        downPath = os.environ['HOME']+"/jeecf-cli/tmpl/downlaod/";
+        if not os.path.exists(downPath):
+            os.makedirs(downPath)
+        with open(downPath+file_name, 'wb') as f:
             f.write(resp.content)
         click.echo(f"Code downloaded: {file_name}")
+        return  downPath+file_name
+
+    def unzip_download_code(self,file_path,out_path):
+        if out_path is None:
+            out_path = "."
+        z = zipfile.ZipFile(file_path, 'r')
+        for k in z.infolist():
+            savePath = os.path.abspath(out_path) + k.filename[4:];
+            print(savePath)
+            saveDir = os.path.dirname(savePath);
+            if not os.path.exists(saveDir):
+                os.makedirs(saveDir);
+            f = open(savePath, 'wb');
+            f.write(z.read(k));
+            f.close();
+        z.close();
+        os.remove(file_path)
+
+    def exec_commands(self,path,commands):
+        if path is None:
+            path = "."
+        if commands:
+            for command in commands:
+                os.system('cd ' + path+";" + command)
 
     def push_template(self, file_path, **kwargs):
         path = urljoin(self.base_url, f"/cli/tmpl/push")
