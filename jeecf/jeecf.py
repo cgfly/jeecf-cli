@@ -270,7 +270,6 @@ class Jeecf:
         z = zipfile.ZipFile(file_path, 'r')
         for k in z.infolist():
             savePath = os.path.abspath(out_path) + k.filename[4:];
-            print(savePath)
             saveDir = os.path.dirname(savePath);
             if not os.path.exists(saveDir):
                 os.makedirs(saveDir);
