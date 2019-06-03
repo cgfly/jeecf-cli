@@ -132,6 +132,7 @@ dir:
   out: "."
   #命令执行目录 默认当前文件夹，支持相对路径
   command: "." 
+# 命令执行列表
 commands:
   - "git init"
 ```
