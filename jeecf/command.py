@@ -99,8 +99,12 @@ def template(subcommand, name):
 
 @main.command()
 @click.argument("name", required=True)
-def gen(name):
-    Jeecf().gen_code(name)
+@click.option('--table_name',required=False, type=click.STRING)
+@click.option('--namespace',required=False, type=click.STRING)
+@click.option('--dbsource',required=False, type=click.STRING)
+@click.option('--template',required=False, type=click.STRING)
+def gen(name, table_name, namespace, dbsource, template):
+    Jeecf().gen_code(name, table_name, namespace, dbsource, template)
 
 
 @main.command()
