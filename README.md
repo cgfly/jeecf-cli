@@ -111,8 +111,8 @@ jeecf logout
 ## Reference   
 ### 代码生成 yml文件参数声明
 ```bash
-#模版名称 必填
-template: dict 
+#模版名称:版本号 必填 
+template: dict:1.0.0
 #命名空间 默认当前命名空间 非必填
 namespace: work
 #数据源 默认当前数据源 非必填
