@@ -239,9 +239,10 @@ class Jeecf:
                 fields = genSingleModel.pop('fields', None)
                 dir = genSingleModel.pop('dir', None)
                 if fields:
-                    for i, field in fields:
+                    for i, field in enumerate(fields):
                         temp_field = field.split(":", 1)
                         fields[i] = {"name": temp_field[0], "value": temp_field[1]}
+                    genSingleModel['fields'] = fields
                 if dir is None:
                     dir = {"command": None,"out": None}
                 params = {}
