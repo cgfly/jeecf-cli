@@ -68,15 +68,6 @@ def plugin(language, name):
 
 
 @main.command()
-@click.argument("name", required=False, type=click.STRING)
-def field(name):
-    if name:
-        Jeecf().get_field_detail(name)
-    else:
-        Jeecf().get_field_list()
-
-
-@main.command()
 @click.argument("subcommand", required=False, type=click.Choice(['pull', 'push']))
 @click.argument("name", required=False)
 def template(subcommand, name):
@@ -85,7 +76,6 @@ def template(subcommand, name):
     elif subcommand == 'push':
         Jeecf().push_template(
             name,
-            name=click.prompt('name'),
             field=click.prompt('field', default=''),
             language=click.prompt('language', default=''),
             version=click.prompt('version', default=''),

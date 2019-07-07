@@ -166,30 +166,6 @@ class Jeecf:
         else:
             return self._get_error_message(resp)
 
-    def get_field_list(self):
-        namespace = self.get_current_namespace()
-        path = urljoin(self.base_url, f"/cli/field/list/{namespace}")
-        resp = self._post_data(path, self.base_data)
-        if resp['success']:
-            fields = resp.get('data')
-            for field in fields:
-                click.echo(field)
-        else:
-            return self._get_error_message(resp)
-
-    def get_field_detail(self, name):
-        namespace = self.get_current_namespace()
-        path = urljoin(self.base_url, f"/cli/field/detail/{namespace}/{name}")
-        resp = self._post_data(path, self.base_data)
-        if resp['success']:
-            click.echo(json.dumps(resp.get('data', {}),
-                                  sort_keys=True,
-                                  indent=4,
-                                  separators=(',', ":"),
-                                  ensure_ascii=False))
-        else:
-            return self._get_error_message(resp)
-
     def get_template_list(self):
         namespace = self.get_current_namespace()
         path = urljoin(self.base_url, f"/cli/tmpl/list/{namespace}")
@@ -289,7 +265,7 @@ class Jeecf:
                 os.makedirs(save_dir)
             if os.path.exists(save_path):
                 paths = os.path.splitext(save_path)
-                save_path =  paths[0] + "_" + str(int(time.time())) + paths[1]
+                save_path = paths[0] + "_" + str(int(time.time())) + paths[1]
             f = open(save_path, 'wb')
             f.write(z.read(k))
             f.close()
