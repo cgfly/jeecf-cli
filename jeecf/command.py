@@ -79,6 +79,7 @@ def template(subcommand, name):
             field=click.prompt('field', default=''),
             language=click.prompt('language', default=''),
             version=click.prompt('version', default=''),
+            tags=click.prompt('tags', default=''),
             namespace=click.prompt('namespace', default=''),
             description=click.prompt('description', default=''),
             wiki_uri=click.prompt('wiki_uri', default=''),

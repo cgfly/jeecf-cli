@@ -201,6 +201,8 @@ class Jeecf:
         with open(file_path, 'r') as file:
             try:
                 genSingleModel = yaml.load(file, Loader=Loader)
+                tableName = table_name;
+                gen_num = 1;
                 if dbsource:
                     genSingleModel["dbsource"] = dbsource
                 if namespace:
@@ -208,7 +210,8 @@ class Jeecf:
                 if template:
                     genSingleModel["template"] = template
                 if table_name:
-                    genSingleModel["table"] = {"name": table_name}
+                    tableName = table_name.split(",")
+                    gen_num = tableName.length
                 dbsource = genSingleModel.pop('dbsource', None)
                 namespace = genSingleModel.pop('namespace', None)
                 commands = genSingleModel.pop('commands', None)
@@ -223,21 +226,24 @@ class Jeecf:
                     dir = {"command": None,"out": None}
                 params = {}
                 params.update(
-                    genSingleModel=genSingleModel,
                     dbsource=dbsource,
                     namespace=namespace,
                     **self.base_data
                 )
                 path = urljoin(self.base_url, f"/cli/tmpl/gen")
-                resp = self._post_data(path, data=params)
-                if resp['success']:
-                    uuid = resp.get('data')
-                    click.echo(uuid)
-                    down_path = self.download_code(uuid, file_path)
-                    self.unzip_download_code(down_path, dir.setdefault('out'))
-                    self.exec_commands(dir.setdefault('command'), commands)
-                else:
-                    click.echo(resp['errorMessage'])
+                for num in range(0, gen_num):
+                    if table_name:
+                        genSingleModel["table"] = {"name": tableName[num]}
+                    params.update(genSingleModel=genSingleModel)
+                    resp = self._post_data(path, data=params)
+                    if resp['success']:
+                        uuid = resp.get('data')
+                        click.echo(uuid)
+                        down_path = self.download_code(uuid, file_path)
+                        self.unzip_download_code(down_path, dir.setdefault('out'))
+                        self.exec_commands(dir.setdefault('command'), commands)
+                    else:
+                        click.echo(resp['errorMessage'])
             except yaml.YAMLError as e:
                 click.echo(f'Yaml syntax error when parse {file_path} \n{e}')
 
