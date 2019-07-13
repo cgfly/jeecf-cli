@@ -201,8 +201,13 @@ class Jeecf:
         with open(file_path, 'r') as file:
             try:
                 genSingleModel = yaml.load(file, Loader=Loader)
-                tableName = table_name;
+                tableName = None
                 gen_num = 1;
+                if genSingleModel["table"]:
+                    tableName = genSingleModel["table"].pop("name");
+                    if tableName:
+                        tableName = tableName.split(",")
+                        gen_num = len(tableName)
                 if dbsource:
                     genSingleModel["dbsource"] = dbsource
                 if namespace:
@@ -211,7 +216,7 @@ class Jeecf:
                     genSingleModel["template"] = template
                 if table_name:
                     tableName = table_name.split(",")
-                    gen_num = tableName.length
+                    gen_num = len(tableName)
                 dbsource = genSingleModel.pop('dbsource', None)
                 namespace = genSingleModel.pop('namespace', None)
                 commands = genSingleModel.pop('commands', None)
@@ -232,7 +237,7 @@ class Jeecf:
                 )
                 path = urljoin(self.base_url, f"/cli/tmpl/gen")
                 for num in range(0, gen_num):
-                    if table_name:
+                    if tableName:
                         genSingleModel["table"] = {"name": tableName[num]}
                     params.update(genSingleModel=genSingleModel)
                     resp = self._post_data(path, data=params)
