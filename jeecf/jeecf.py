@@ -300,7 +300,7 @@ class Jeecf:
                     "Accept-Encoding": "gzip, deflate, br",
                     "Accept": "*/*",
                     "X-Requested-With": "XMLHttpRequest",
-                }, auth=('admin', '123456')
+                }, auth=(get_config("common", "username"), get_config("common", "password"))
             )
             resp = resp.json()
             if resp['success']:
