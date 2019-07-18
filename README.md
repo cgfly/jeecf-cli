@@ -4,7 +4,7 @@
 
 ## Introduce
 
-Command line toolbox of [Jeecf](https://github.com/cgfly/jeecf)
+Command line toolbox of [Jeecf](https://github.com/cgfly/jeecf-manager)
 
 ## Install
 
